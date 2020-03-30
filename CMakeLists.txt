@@ -27,13 +27,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 project(hello)
 set(PROJECT_VERSION 2.0.0)
+set(EXECUTABLE_NAME ${PROJECT_NAME} CACHE STRING "")
 
 find_package(Threads REQUIRED)
 
 enable_testing()
 
-# search module in ${CMAKE_MODULE_PATH}
-include(gflags)
 
 # set compile options
 option(HELLO_TOGGLE "this is hello toggle" ON)
@@ -47,16 +46,32 @@ add_subdirectory(test)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories("${PROJECT_SOURCE_DIR}/math")
 include_directories("${PROJECT_SOURCE_DIR}/string")
-include_directories(${CMAKE_BINARY_DIR}/third-party/gflag-2.2.2/include)
-link_directories(${CMAKE_BINARY_DIR}/third-party/gflag-2.2.2/lib)
+include_directories(${CMAKE_BINARY_DIR}/third-party/gflags/include)
+link_directories(${CMAKE_BINARY_DIR}/third-party/gflags/lib)
 
 aux_source_directory(. SRC_LIST)
-add_executable(main ${SRC_LIST})
+add_executable(${EXECUTABLE_NAME} ${SRC_LIST})
 
-message(STATUS "THREADS_FOUND: ${THREADS_FOUND}")
-message(STATUS "CMAKE_THREAD_LIBS_INIT: ${CMAKE_THREAD_LIBS_INIT}")
-target_link_libraries(main math)
-target_link_libraries(main string)
-target_link_libraries(main Threads::Threads)
-target_link_libraries(main gflags)
-add_dependencies(main gflag-2.2.2)
+# search module in ${CMAKE_MODULE_PATH}
+include(gflags)
+
+target_link_libraries(${EXECUTABLE_NAME} math)
+target_link_libraries(${EXECUTABLE_NAME} string)
+target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
+target_link_libraries(${EXECUTABLE_NAME} gflags)
+
+# reference: https://yngzmiao.blog.csdn.net/article/details/102797448
+message(STATUS "CMAKE_COMMAND: ${CMAKE_COMMAND}")
+add_custom_target(echo
+    COMMAND ${CMAKE_COMMAND} -E echo "echo target: ${PROJECT_NAME}:${PROJECT_VERSION}"
+    COMMENT "this is echo from add_custom_target"
+)
+
+add_custom_command(OUTPUT echo_cmd
+    COMMAND ${CMAKE_COMMAND} -E echo "echo target: ${PROJECT_NAME}:${PROJECT_VERSION}"
+    COMMENT "this is echo from add_custom_command"
+)
+
+add_custom_target(echo_cmd ALL
+    DEPENDS echo_cmd
+)
