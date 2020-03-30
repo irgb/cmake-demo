@@ -51,6 +51,7 @@ link_directories(${CMAKE_BINARY_DIR}/third-party/gflags/lib)
 
 aux_source_directory(. SRC_LIST)
 add_executable(${EXECUTABLE_NAME} ${SRC_LIST})
+install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
 # search module in ${CMAKE_MODULE_PATH}
 include(gflags)
