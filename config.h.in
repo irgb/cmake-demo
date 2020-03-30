@@ -1,0 +1,2 @@
+#cmakedefine HELLO_TOGGLE
+#define PROJECT_VERSION "@PROJECT_VERSION@"
