@@ -1,2 +1,4 @@
 #cmakedefine HELLO_TOGGLE
+#cmakedefine CUDA_TOGGLE
+
 #define PROJECT_VERSION "@PROJECT_VERSION@"

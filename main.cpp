@@ -1,11 +1,12 @@
 #include <iostream>
-#include <config.h>
 
 #include "gflags/gflags.h"
 
+#include "config.h"
 #include "add.h"
 #include "sub.h"
 #include "reverse.h"
+#include "print_hello.h"
 
 using namespace std;
 
@@ -40,5 +41,7 @@ int main(int argc, char* argv[])
     cin >> str;
     reverse(str);
     cout << "reversed string: " << str << endl;
+
+    printHello();
     return 0;
 }
