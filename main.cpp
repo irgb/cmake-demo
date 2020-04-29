@@ -75,4 +75,7 @@ void testAddVector(int& n, int *a, int *b, int *c) {
         cout << c[i] << ", ";
     }
     cout << "]" << endl;
+    free(a);
+    free(b);
+    free(c);
 }

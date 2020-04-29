@@ -16,6 +16,7 @@ void printHello() {
 }
 
 void addVector(int *A, int *B, int *C, int n) {
+    cout << "add vector on CPU." << endl;
     for(int i = 0; i < n; ++i) {
         C[i] = A[i] + B[i];
     }
