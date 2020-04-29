@@ -14,3 +14,9 @@ void printHello() {
     cout << "CUDA is disabled(Execute cmake with -DWITH_CUDA=ON to enable it.). hello from CPU: " << endl;
     hello_cpu();
 }
+
+void addVector(int *A, int *B, int *C, int n) {
+    for(int i = 0; i < n; ++i) {
+        C[i] = A[i] + B[i];
+    }
+}
