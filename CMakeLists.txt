@@ -35,7 +35,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-project(hello C CXX CUDA)
+project(hello C CXX)
 set(PROJECT_VERSION 2.0.0)
 set(EXECUTABLE_NAME ${PROJECT_NAME} CACHE STRING "")
 
@@ -47,6 +47,10 @@ enable_testing()
 # set compile options
 option(HELLO_TOGGLE "this is hello toggle" ON)
 option(WITH_CUDA "this is cuda toggle" OFF)
+
+if(WITH_CUDA)
+    enable_language(CUDA)
+endif()
 
 configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/config.h @ONLY)
 
@@ -64,6 +68,7 @@ link_directories(${CMAKE_BINARY_DIR}/third-party/gflags/lib)
 
 aux_source_directory(. SRC_LIST)
 add_executable(${EXECUTABLE_NAME} ${SRC_LIST})
+
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
 # search module in ${CMAKE_MODULE_PATH}
