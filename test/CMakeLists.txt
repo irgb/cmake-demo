@@ -1,7 +1,12 @@
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/math)
 
-ADD_EXECUTABLE(raw_test raw_test.cpp)
-TARGET_LINK_LIBRARIES(raw_test math)
+add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-g>")
+add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-O0>")
+add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fprofile-arcs>")
+add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-ftest-coverage>")
+
+add_executable(raw_test raw_test.cpp)
+target_link_libraries(raw_test math gcov)
 
 add_test(NAME raw_test_1 COMMAND $<TARGET_FILE:raw_test> 1 2)
 set_tests_properties(raw_test_1 PROPERTIES PASS_REGULAR_EXPRESSION "3")
