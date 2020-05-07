@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
+# disable default -rdynamic option. https://tinyurl.com/ycg93bjq
+cmake_policy(SET CMP0065 NEW)
 
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
