@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 # disable default -rdynamic option. https://tinyurl.com/ycg93bjq
-cmake_policy(SET CMP0065 NEW)
+#cmake_policy(SET CMP0065 NEW)
 
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
@@ -16,8 +16,8 @@ message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 #set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(init)
 project(hello C CXX)
+include(init)
 
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -75,6 +75,7 @@ target_link_libraries(${EXECUTABLE_NAME} string)
 target_link_libraries(${EXECUTABLE_NAME} print_hello)
 target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
 target_link_libraries(${EXECUTABLE_NAME} gflags)
+target_link_libraries(${EXECUTABLE_NAME} gcov)
 
 # reference: https://yngzmiao.blog.csdn.net/article/details/102797448
 message(STATUS "CMAKE_COMMAND: ${CMAKE_COMMAND}")

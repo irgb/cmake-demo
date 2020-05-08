@@ -1,10 +1,5 @@
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/math)
 
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-g>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-O0>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fprofile-arcs>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-ftest-coverage>")
-
 add_executable(raw_test raw_test.cpp)
 target_link_libraries(raw_test math gcov)
 
