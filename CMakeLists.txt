@@ -37,6 +37,10 @@ find_package(Threads REQUIRED)
 
 enable_testing()
 
+# search module in ${CMAKE_MODULE_PATH}
+include(gflags)
+include(gtest)
+
 # set compile options
 option(HELLO_TOGGLE "this is hello toggle" ON)
 option(WITH_CUDA "this is cuda toggle" OFF)
@@ -62,11 +66,9 @@ link_directories(${CMAKE_BINARY_DIR}/third-party/gflags/lib)
 aux_source_directory(. SRC_LIST)
 add_executable(${EXECUTABLE_NAME} ${SRC_LIST})
 
-install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
+add_dependencies(${EXECUTABLE_NAME} external_gflags)
 
-# search module in ${CMAKE_MODULE_PATH}
-include(gflags)
-include(gtest)
+install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
 target_link_libraries(${EXECUTABLE_NAME} math)
 target_link_libraries(${EXECUTABLE_NAME} string)
