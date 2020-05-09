@@ -7,6 +7,7 @@ set(GFLAG_INCLUDE_DIR   ${GFLAG_ROOT}/include)
 
 message(STATUS "GFLAG_ROOT: ${GFLAG_ROOT}")
 set(GFLAG_URL           https://github.com/gflags/gflags/archive/v2.2.1.zip)
+
 set(GFLAG_DOWNLOAD_CMD  wget ${GFLAG_URL})
 set(GFLAG_CONFIGURE     cd ${GFLAG_ROOT}/src/${PROJ_GFLAGS} && cmake -D CMAKE_INSTALL_PREFIX=${GFLAG_ROOT} .)
 set(GFLAG_MAKE          cd ${GFLAG_ROOT}/src/${PROJ_GFLAGS} && make)

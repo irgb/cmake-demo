@@ -31,7 +31,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(PROJECT_VERSION 2.0.0)
-set(EXECUTABLE_NAME ${PROJECT_NAME} CACHE STRING "")
+set(EXECUTABLE_NAME ${PROJECT_NAME})
 
 find_package(Threads REQUIRED)
 
@@ -66,6 +66,7 @@ install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
 # search module in ${CMAKE_MODULE_PATH}
 include(gflags)
+include(gtest)
 
 target_link_libraries(${EXECUTABLE_NAME} math)
 target_link_libraries(${EXECUTABLE_NAME} string)
