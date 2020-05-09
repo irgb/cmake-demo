@@ -1,7 +1,6 @@
 AUX_SOURCE_DIRECTORY(. DIR_MATH_SRC_LIST)
 
 add_library(math ${DIR_MATH_SRC_LIST})
-target_link_libraries(math gcov)
 
 INSTALL(TARGETS math DESTINATION lib)
 INSTALL(DIRECTORY ./ DESTINATION include/math FILES_MATCHING PATTERN *.h)

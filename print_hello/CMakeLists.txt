@@ -13,7 +13,6 @@ if(WITH_CUDA)
 else(WITH_CUDA)
     ADD_LIBRARY(print_hello ${CPU_SRCS})
 endif()
-target_link_libraries(print_hello gcov)
 
 INSTALL(TARGETS print_hello DESTINATION lib)
 INSTALL(DIRECTORY ./ DESTINATION include/print_hello FILES_MATCHING PATTERN *.h)

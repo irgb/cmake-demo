@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 # disable default -rdynamic option. https://tinyurl.com/ycg93bjq
-#cmake_policy(SET CMP0065 NEW)
+cmake_policy(SET CMP0065 NEW)
 
 find_program(CCACHE_FOUND ccache)
 if(CCACHE_FOUND)
@@ -9,28 +9,26 @@ if(CCACHE_FOUND)
     message(STATUS "CCACHE FOUND")
 endif(CCACHE_FOUND)
 
-message(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
-message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
-
 # set CXX standard: 98, 11, 14, 17
-#set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 project(hello C CXX)
+
 include(init)
 
+message(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
+message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
 
 if(NOT CMAKE_BUILD_TYPE)
    set(CMAKE_BUILD_TYPE Release)
 endif()
-
 message(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-
 
 set(PROJECT_VERSION 2.0.0)
 set(EXECUTABLE_NAME ${PROJECT_NAME} CACHE STRING "")
@@ -38,7 +36,6 @@ set(EXECUTABLE_NAME ${PROJECT_NAME} CACHE STRING "")
 find_package(Threads REQUIRED)
 
 enable_testing()
-
 
 # set compile options
 option(HELLO_TOGGLE "this is hello toggle" ON)
@@ -75,7 +72,6 @@ target_link_libraries(${EXECUTABLE_NAME} string)
 target_link_libraries(${EXECUTABLE_NAME} print_hello)
 target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
 target_link_libraries(${EXECUTABLE_NAME} gflags)
-target_link_libraries(${EXECUTABLE_NAME} gcov)
 
 # reference: https://yngzmiao.blog.csdn.net/article/details/102797448
 message(STATUS "CMAKE_COMMAND: ${CMAKE_COMMAND}")
@@ -100,7 +96,7 @@ add_custom_target(echo_cmd ALL
 
 add_custom_command(OUTPUT echo_cmd_new
     COMMAND ${CMAKE_COMMAND} -E echo "echo target: ${PROJECT_NAME}:${PROJECT_VERSION}"
-    COMMAND cmake -E copy /hello/build/lib/libmath.a /tmp/libmath.a
+    COMMAND cmake -E copy ${CMAKE_BINARY_DIR}/lib/libmath.a /tmp/libmath.a
     COMMENT "this is echo_cmd_new"
     DEPENDS math
 )

@@ -28,6 +28,8 @@ set(CMAKE_CUDA_FLAGS_MINSIZEREL "-O1 -DNDEBUG")
 # init CMAKE_EXE_LINKER_FLAGS
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+
 # check if cxx compiler support c++11
 #include(CheckCXXCompilerFlag)
 #CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -53,10 +55,6 @@ add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wno-unused-parameter>")
 add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wno-unused-function>")
 add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fdata-sections>")
 add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-ffunction-sections>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-g>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-O0>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fprofile-arcs>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-ftest-coverage>")
 
 # add compiler option to CUDA Compiler
 add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fno-omit-frame-pointer>")
@@ -64,6 +62,3 @@ add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-Wno-unused-parameter
 add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-Wno-unused-function>")
 add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fdata-sections>")
 add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ffunction-sections>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-fprofile-arcs>")
-add_compile_options("$<$<COMPILE_LANGUAGE:CUDA>:-Xcompiler=-ftest-coverage>")
-

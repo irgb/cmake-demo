@@ -1,7 +1,7 @@
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/math)
 
 add_executable(raw_test raw_test.cpp)
-target_link_libraries(raw_test math gcov)
+target_link_libraries(raw_test math)
 
 add_test(NAME raw_test_1 COMMAND $<TARGET_FILE:raw_test> 1 2)
 set_tests_properties(raw_test_1 PROPERTIES PASS_REGULAR_EXPRESSION "3")
