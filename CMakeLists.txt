@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.10.0)
 # disable default -rdynamic option. https://tinyurl.com/ycg93bjq
 cmake_policy(SET CMP0065 NEW)
 
@@ -10,13 +10,14 @@ if(CCACHE_FOUND)
 endif(CCACHE_FOUND)
 
 # set CXX standard: 98, 11, 14, 17
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 project(hello C CXX)
 
 include(init)
+include(llvm)
 
 message(STATUS "CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
 message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
@@ -51,30 +52,38 @@ endif()
 
 configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/config.h @ONLY)
 
-add_subdirectory(math)
-add_subdirectory(string)
-add_subdirectory(print_hello)
-add_subdirectory(test)
-
+include_directories("${CMAKE_SOURCE_DIR}")
+include_directories("${CMAKE_BINARY_DIR}")
 include_directories("${CMAKE_BINARY_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/math")
 include_directories("${PROJECT_SOURCE_DIR}/string")
 include_directories("${PROJECT_SOURCE_DIR}/print_hello")
+include_directories("${PROJECT_SOURCE_DIR}/dialect")
 include_directories(${CMAKE_BINARY_DIR}/third-party/gflags/include)
+
 link_directories(${CMAKE_BINARY_DIR}/third-party/gflags/lib)
 
-aux_source_directory(. SRC_LIST)
-add_executable(${EXECUTABLE_NAME} ${SRC_LIST})
+add_subdirectory(math)
+add_subdirectory(string)
+add_subdirectory(print_hello)
+add_subdirectory(test)
+add_subdirectory(dialect)
+
+add_executable(${EXECUTABLE_NAME} ./main.cpp)
+add_executable(test_dialect ./test_dialect.cpp)
 
 add_dependencies(${EXECUTABLE_NAME} external_gflags)
 
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
+install(TARGETS test_dialect DESTINATION bin)
 
 target_link_libraries(${EXECUTABLE_NAME} math)
 target_link_libraries(${EXECUTABLE_NAME} string)
 target_link_libraries(${EXECUTABLE_NAME} print_hello)
 target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
 target_link_libraries(${EXECUTABLE_NAME} gflags)
+target_link_libraries(test_dialect dialect)
+target_link_libraries(test_dialect ${MLIR_ALL_LIBS})
 
 # reference: https://yngzmiao.blog.csdn.net/article/details/102797448
 message(STATUS "CMAKE_COMMAND: ${CMAKE_COMMAND}")

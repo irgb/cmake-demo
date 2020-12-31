@@ -2,3 +2,4 @@ build
 build/*
 coverage_report
 .DS_Store
+*.swp

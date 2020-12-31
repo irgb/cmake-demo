@@ -1,0 +1,28 @@
+find_package(LLVM REQUIRED CONFIG)
+find_package(MLIR REQUIRED CONFIG)
+find_package(ZLIB REQUIRED)
+message(STATUS "ZLIB_INCLUDE_DIRS: ${ZLIB_INCLUDE_DIRS}")
+
+list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+include(AddLLVM)
+
+include_directories(${LLVM_INCLUDE_DIRS})
+list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
+include(AddLLVM)
+include(TableGen)
+include(AddMLIR)
+
+message(STATUS "Found MLIR: ${MLIR_DIR}")
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+
+add_definitions(${LLVM_DEFINITIONS})
+llvm_map_components_to_libnames(llvm_libs Support Core irreader X86 executionengine orcjit mcjit all codegen)
+message(STATUS "LLVM libs: ${llvm_libs}")
+get_property(MLIR_ALL_LIBS GLOBAL PROPERTY MLIR_ALL_LIBS)
+get_property(MLIR_DIALECT_LIBS GLOBAL PROPERTY MLIR_DIALECT_LIBS)
+get_property(MLIR_CONVERSION_LIBS GLOBAL PROPERTY MLIR_CONVERSION_LIBS)
+message(STATUS "MLIR_ALL_LIBS: ${MLIR_ALL_LIBS}")
+message(STATUS "MLIR_DIALECT_LIBS: ${MLIR_DIALECT_LIBS}")
+message(STATUS "MLIR_CONVERSION_LIBS: ${MLIR_CONVERSION_LIBS}")
