@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "dialect/test.h"
 #include "mlir/Parser.h"
 #include "mlir/IR/Module.h"
 #include "mlir/IR/Block.h"
@@ -14,6 +13,9 @@
 #include "llvm/Support/raw_os_ostream.h"
 #include "llvm/Support/CommandLine.h"
 #include "mlir/Dialect/StandardOps/IR/Ops.h"
+
+#include "dialect/test.h"
+#include "dialect/types.h"
 
 using namespace std;
 namespace cl = llvm::cl;

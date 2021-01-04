@@ -14,19 +14,16 @@ private:
     static mlir::MLIRContext *context;
     Global();
 public:
-    static MLIRContext *getMLIRContext();
+    static mlir::MLIRContext *getMLIRContext();
 }; // class Global
 
 namespace test {
-namespace detail {
-struct ComputeTypeStorage; 
-} // end namespace detail
 
 class TestDialect : public ::mlir::Dialect {
   explicit TestDialect(::mlir::MLIRContext *context)
     : ::mlir::Dialect(getDialectNamespace(), context,
       ::mlir::TypeID::get<TestDialect>()) {
-    
+
     initialize();
   }
 
@@ -41,19 +38,8 @@ public:
   static ::llvm::StringRef getDialectNamespace() { return "test"; }
 };
 
-/// Include the auto-generated header file containing the declarations of the
-/// toy operations.
-
 #define GET_OP_CLASSES
 #include "dialect/test.h.inc"
-
-class ComputeType : public Type::TypeBase<ComputeType, Type, detail::ComputeTypeStorage> {
-public:
-    using Base::Base;
-
-    static ComputeType get(int width, MLIRContext *context);
-    int getWidth();
-};
 
 } // end namespace 
 

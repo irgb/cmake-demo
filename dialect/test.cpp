@@ -1,5 +1,6 @@
 #include <iostream>
 #include "dialect/test.h"
+#include "dialect/types.h"
 #include "mlir/IR/Builders.h"
 #include "mlir/IR/DialectImplementation.h"
 #include "mlir/IR/OpImplementation.h"
@@ -13,10 +14,12 @@ Global::Global() {};
 
 mlir::MLIRContext* Global::context = nullptr;
 
-MLIRContext* Global::getMLIRContext() {
+mlir::MLIRContext* Global::getMLIRContext() {
     if(context == nullptr) {
         context = new mlir::MLIRContext();
+        //std::cerr << "new mlir::MLIRContext " << context << std::endl;
     }
+    //std::cerr << "getMLIRContext: " << context << std::endl;
     return context;
 }
 
@@ -24,11 +27,12 @@ void TestDialect::initialize() {
     allowUnknownTypes();
     allowUnknownOperations();
 
+    addTypes<ComputeType>();
+
     addOperations<
 #define GET_OP_LIST
 #include "dialect/test.cpp.inc"
       >();
-    addTypes<ComputeType>();
 }
 
 
@@ -68,53 +72,21 @@ static mlir::LogicalResult verify(ComputeConstantOp op) {
     return mlir::success();
 }
 
-namespace test {
-namespace detail {
-
-struct ComputeTypeStorage : public mlir::TypeStorage {
-    ComputeTypeStorage(int width): width(width) {}
-    using KeyTy = char;
-
-    bool operator==(const KeyTy &key) const {
-        return key == KeyTy(width);
-    }
-
-    static llvm::hash_code hashKey(const KeyTy &key) {
-        return llvm::hash_value(key);
-    }
-
-    static ComputeTypeStorage *construct(mlir::TypeStorageAllocator &allocator, const KeyTy key) {
-        return new(allocator.allocate<ComputeTypeStorage>())
-            ComputeTypeStorage(key);
-    }
-
-    int width;
-};
-
-} // end detail namespace
-} // end test namespace
-
-
-ComputeType ComputeType::get(int width, mlir::MLIRContext *context) {
-    return Base::get(context, width);
-}
-
-int ComputeType::getWidth() {
-    return getImpl()->width;
-}
-
 mlir::Type TestDialect::parseType(mlir::DialectAsmParser &parser) const {
     if (parser.parseKeyword("compute_type") || parser.parseLess()) {
         return mlir::Type();
     }
-    int width = 0;
+    unsigned int width = 0;
     if(parser.parseInteger(width)) {
         return mlir::Type();
     }
+    mlir::Type charType = IntegerType::get(1, Global::getMLIRContext());
+    //std::cerr << "parseType charType context: " << charType.getContext() << std::endl;
     if(parser.parseGreater()) {
         return mlir::Type();
     }
-    return ComputeType::get(width, Global::getMLIRContext());
+    return ComputeType::get(width, charType);
+    //return ComputeType::get(width, Global::getMLIRContext());
 }
 
 void TestDialect::printType(mlir::Type type, mlir::DialectAsmPrinter &printer) const {

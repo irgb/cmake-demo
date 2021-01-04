@@ -71,11 +71,13 @@ add_subdirectory(dialect)
 
 add_executable(${EXECUTABLE_NAME} ./main.cpp)
 add_executable(test_dialect ./test_dialect.cpp)
+add_executable(mlir_opt ./mlir_opt.cpp)
 
 add_dependencies(${EXECUTABLE_NAME} external_gflags)
 
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 install(TARGETS test_dialect DESTINATION bin)
+install(TARGETS mlir_opt DESTINATION bin)
 
 target_link_libraries(${EXECUTABLE_NAME} math)
 target_link_libraries(${EXECUTABLE_NAME} string)
@@ -84,6 +86,8 @@ target_link_libraries(${EXECUTABLE_NAME} Threads::Threads)
 target_link_libraries(${EXECUTABLE_NAME} gflags)
 target_link_libraries(test_dialect dialect)
 target_link_libraries(test_dialect ${MLIR_ALL_LIBS})
+target_link_libraries(mlir_opt dialect)
+target_link_libraries(mlir_opt ${MLIR_ALL_LIBS})
 
 # reference: https://yngzmiao.blog.csdn.net/article/details/102797448
 message(STATUS "CMAKE_COMMAND: ${CMAKE_COMMAND}")

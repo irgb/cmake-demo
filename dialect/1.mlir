@@ -23,7 +23,7 @@ module @module_symbol attributes {module.attr="this is attr"} {
   %2 = constant 3 : !i32_alias
 
   // "get_string" is generic operation has no custom assembly form.
-  //%op = "test.compute_constant"() {value="+"}: () ->!test.compute_type
+  //%op = "test.compute_constant"() {value="+"}: () ->!test.compute_type<1>
   %op = test.compute_constant "+" : !test.compute_type<1>
 
   %res = "do_async"(%1, %2, %op) ({
