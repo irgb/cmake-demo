@@ -15,7 +15,7 @@ class ComputeType : public mlir::Type::TypeBase<ComputeType, mlir::Type, detail:
 public:
     using Base::Base;
 
-    static ComputeType get(unsigned int width, Type type);
+    static ComputeType get(unsigned int width);
     unsigned int getWidth();
 };
 

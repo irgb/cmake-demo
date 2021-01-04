@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "dialect/types.h"
+#include "dialect/test.h"
 
 namespace test {
 namespace detail {
@@ -9,13 +10,13 @@ namespace detail {
 // ComputeTypeStorage definition
 // =============================
 struct ComputeTypeStorage : public mlir::TypeStorage {
-    ComputeTypeStorage(unsigned int width, mlir::Type charType): width(width), charType(charType) {
+    ComputeTypeStorage(unsigned int width): width(width) {
         //std::cerr << "ComputeTypeStorage::ComputeTypeStorage" << std::endl;
     }
-    using KeyTy = std::pair<unsigned int, mlir::Type>;
+    using KeyTy = unsigned int;
 
     bool operator==(const KeyTy &key) const {
-        return key == KeyTy(width, charType);
+        return key == width;
     }
 
     static llvm::hash_code hashKey(const KeyTy &key) {
@@ -24,11 +25,10 @@ struct ComputeTypeStorage : public mlir::TypeStorage {
 
     static ComputeTypeStorage *construct(mlir::TypeStorageAllocator &allocator, const KeyTy &key) {
         return new(allocator.allocate<ComputeTypeStorage>())
-            ComputeTypeStorage(key.first, key.second);
+            ComputeTypeStorage(key);
     }
 
     unsigned int width;
-    mlir::Type charType;
 };
 
 } // end detail namespace
@@ -36,10 +36,10 @@ struct ComputeTypeStorage : public mlir::TypeStorage {
 // =======================
 // ComputeType definition
 // =======================
-ComputeType ComputeType::get(unsigned int width, Type type) {
+ComputeType ComputeType::get(unsigned int width) {
     //std::cerr << "ComputeType::get begin" << std::endl;
     //std::cerr << "ComputeType::get type context: " << type.getContext() << std::endl;
-    auto ret = Base::get(type.getContext(), width, type);
+    auto ret = Base::get(Global::getMLIRContext(), width);
     //return Base::get(type.getContext(), width, type);
     //std::cerr << "ComputeType::get end" << std::endl;
     return ret;

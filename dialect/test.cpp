@@ -80,12 +80,11 @@ mlir::Type TestDialect::parseType(mlir::DialectAsmParser &parser) const {
     if(parser.parseInteger(width)) {
         return mlir::Type();
     }
-    mlir::Type charType = IntegerType::get(1, Global::getMLIRContext());
     //std::cerr << "parseType charType context: " << charType.getContext() << std::endl;
     if(parser.parseGreater()) {
         return mlir::Type();
     }
-    return ComputeType::get(width, charType);
+    return ComputeType::get(width);
     //return ComputeType::get(width, Global::getMLIRContext());
 }
 
