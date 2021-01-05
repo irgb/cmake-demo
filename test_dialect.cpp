@@ -13,6 +13,8 @@
 #include "llvm/Support/raw_os_ostream.h"
 #include "llvm/Support/CommandLine.h"
 #include "mlir/Dialect/StandardOps/IR/Ops.h"
+#include "mlir/Pass/PassManager.h"
+#include "mlir/Transforms/Passes.h"
 
 #include "dialect/test.h"
 #include "dialect/types.h"
@@ -159,6 +161,7 @@ module @module_symbol attributes {module.attr="this is attr"} {
     std::cout << "----------print operation, region, block end----------" << std::endl;
 
     mlir::ModuleOp module_op = module_ref.get();
+
     if (failed(mlir::verify(module_op))) {
         module_op.emitError("module verification error");
         return 1;
@@ -180,6 +183,21 @@ module @module_symbol attributes {module.attr="this is attr"} {
         }
     }
 
-    module_ref -> dump();
+    module_ref->dump();
+
+    // ==========test PassManager begin====================
+    std::cout << "==========test PassManager begin==============" << std::endl;
+    mlir::PassManager passManager(context);
+    // addPass 会调用 getCanonicalizationPatterns
+    passManager.addNestedPass<mlir::FuncOp>(mlir::createCanonicalizerPass());
+    //passManager.addPass(mlir::createCanonicalizerPass());
+    if (mlir::failed(passManager.run(*module_ref))) {
+        std::cerr << "PassManager run failed" << std::endl;
+    } else {
+        std::cout << "PassManager run succeeded." << std::endl;
+    }
+    module_ref->dump();
+    std::cout << "==========test PassManager end==============" << std::endl;
+    // ==========test PassManager end===================
     return 0;
 }

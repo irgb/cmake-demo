@@ -1,3 +1,5 @@
+#include "mlir/Pass/PassManager.h"
+#include "mlir/InitAllPasses.h"
 #include "mlir/Support/MlirOptMain.h"
 #include "mlir/Dialect/StandardOps/IR/Ops.h"
 
@@ -5,8 +7,16 @@
 #include "dialect/types.h"
 
 int main(int argc, char** argv) {
-    //std::cerr << "main" << std::endl;
     mlir::MLIRContext *context = Global::getMLIRContext();
+    // 在顶层 ModuleOp上创建一个 PassManager
+    mlir::PassManager passManager(context);
+    // 在 ModuleOp/FuncOp 上创建一个 PassManager
+    //mlir::OpPassManager &optPm = passManager.nest<mlir::FuncOp>();
+    //optPm.addPass(hello::createLowerToAffinePass());
+    passManager.addPass(mlir::createCanonicalizerPass());
+    //mlir::registerAllPasses();
+
+    //std::cerr << "main" << std::endl;
     //context->getOrLoadDialect<test::TestDialect>();
     //context->getOrLoadDialect<mlir::StandardOpsDialect>();
     //std::cerr << "main allowUnregisteredDialects" << std::endl;

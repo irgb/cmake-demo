@@ -41,6 +41,6 @@ public:
 #define GET_OP_CLASSES
 #include "dialect/test.h.inc"
 
-} // end namespace 
+} // namespace test
 
 #endif // TEST_DIALECT_H_

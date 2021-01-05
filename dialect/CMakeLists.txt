@@ -2,6 +2,8 @@ set(LLVM_TARGET_DEFINITIONS test.td)
 mlir_tablegen(test.h.inc -gen-op-decls)
 mlir_tablegen(test.cpp.inc -gen-op-defs)
 mlir_tablegen(test_dialect.h.inc --gen-dialect-decls)
+mlir_tablegen(test_rewriters.inc -gen-rewriters)
+
 add_public_tablegen_target(TestIncGen)
 
 add_custom_target(test_inc_gen ALL DEPENDS TestIncGen)

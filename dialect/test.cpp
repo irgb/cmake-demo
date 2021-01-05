@@ -93,5 +93,15 @@ void TestDialect::printType(mlir::Type type, mlir::DialectAsmPrinter &printer) c
     printer << "compute_type<" << computeType.getWidth() << ">";
 }
 
+//===----------------------------------------------------------------------===//
+// TransposeOp
+
+void TransposeOp::build(mlir::OpBuilder &builder,
+                        mlir::OperationState &state,
+                        mlir::Value value) {
+  state.addTypes(UnrankedTensorType::get(builder.getF64Type()));
+  state.addOperands(value);
+}
+
 #define GET_OP_CLASSES
 #include "dialect/test.cpp.inc"
