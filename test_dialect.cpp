@@ -190,7 +190,6 @@ module @module_symbol attributes {module.attr="this is attr"} {
     mlir::PassManager passManager(context);
     // addPass 会调用 getCanonicalizationPatterns
     passManager.addNestedPass<mlir::FuncOp>(mlir::createCanonicalizerPass());
-    //passManager.addPass(mlir::createCanonicalizerPass());
     if (mlir::failed(passManager.run(*module_ref))) {
         std::cerr << "PassManager run failed" << std::endl;
     } else {

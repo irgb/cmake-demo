@@ -96,12 +96,12 @@ void TestDialect::printType(mlir::Type type, mlir::DialectAsmPrinter &printer) c
 //===----------------------------------------------------------------------===//
 // TransposeOp
 
-void TransposeOp::build(mlir::OpBuilder &builder,
-                        mlir::OperationState &state,
-                        mlir::Value value) {
-  state.addTypes(UnrankedTensorType::get(builder.getF64Type()));
-  state.addOperands(value);
-}
+//void TransposeOp::build(mlir::OpBuilder &builder,
+//                        mlir::OperationState &state,
+//                        mlir::Value value) {
+//  state.addTypes(UnrankedTensorType::get(builder.getF64Type()));
+//  state.addOperands(value);
+//}
 
 #define GET_OP_CLASSES
 #include "dialect/test.cpp.inc"

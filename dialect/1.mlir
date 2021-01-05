@@ -26,6 +26,9 @@ module @module_symbol attributes {module.attr="this is attr"} {
   //%op = "test.compute_constant"() {value="+"}: () ->!test.compute_type<1>
   %op = test.compute_constant "+" : !test.compute_type<1>
 
+  //******************
+  //An SSACFG (SSA-style Control Flow Graph) region
+  //******************
   %res = "do_async"(%1, %2, %op) ({
   //^bb0
     %is_add = "is_add"(%op) : (!test.compute_type<1>) -> i1

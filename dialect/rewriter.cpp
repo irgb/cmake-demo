@@ -14,6 +14,7 @@ namespace test {
 
 /// This is an example of a c++ rewrite pattern for the TransposeOp. It
 /// optimizes the following scenario: transpose(transpose(x)) -> x
+/// 等价于 DRR 格式: "def SimplifyRedundantTranspose : Pat<(TransposeOp(TransposeOp $arg)), (replaceWithValue $arg)>;"
 struct SimplifyRedundantTranspose : public mlir::OpRewritePattern<TransposeOp> {
   /// We register this pattern to match every toy.transpose in the IR.
   /// The "benefit" is used by the framework to order the patterns and process
@@ -35,10 +36,6 @@ struct SimplifyRedundantTranspose : public mlir::OpRewritePattern<TransposeOp> {
     if (!transposeInputOp)
       return failure();
 
-    std::cerr << "SimplifyRedundantTranspose begin" << std::endl;
-    op.getLoc().dump();
-    transposeInputOp.getLoc().dump();
-    std::cerr << "SimplifyRedundantTranspose end" << std::endl;
     // Otherwise, we have a redundant transpose. Use the rewriter.
     rewriter.replaceOp(op, {transposeInputOp.getOperand()});
     return success();

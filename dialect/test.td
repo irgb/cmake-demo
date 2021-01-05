@@ -150,7 +150,7 @@ def ComputeConstantOp : Test_Op<"compute_constant", [ConstantLike, NoSideEffect]
   //let hasFolder = 1;
 }
 
-def ReshapeOp : Test_Op<"reshape"> {
+def ReshapeOp : Test_Op<"reshape", [NoSideEffect]> {
     let summary = "reshape operation";
 
     let description = [{
@@ -223,7 +223,7 @@ def ReturnOp : Test_Op<"return", [NoSideEffect, HasParent<"FuncOp">,
   //let verifier = [{ return ::verify(*this); }];
 }
 
-def TransposeOp : Test_Op<"transpose", []> {
+def TransposeOp : Test_Op<"transpose", [NoSideEffect]> {
   let summary = "transpose operation";
 
   let arguments = (ins F64Tensor:$input);
@@ -237,9 +237,9 @@ def TransposeOp : Test_Op<"transpose", []> {
   let hasCanonicalizer = 1;
 
   // Allow building a TransposeOp with from the input operand.
-  let builders = [
-    OpBuilder<"OpBuilder &b, OperationState &state, Value input">
-  ];
+  //let builders = [
+  //  OpBuilder<"OpBuilder &b, OperationState &state, Value input">
+  //];
 
   // Invoke a static verify method to verify this transpose operation.
   //let verifier = [{ return ::verify(*this); }];
