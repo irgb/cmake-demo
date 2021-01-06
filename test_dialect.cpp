@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "mlir/Parser.h"
+#include "mlir/IR/AsmState.h"
 #include "mlir/IR/Module.h"
 #include "mlir/IR/Block.h"
 #include "mlir/IR/Region.h"
@@ -76,6 +77,9 @@ void printBlock(mlir::Block &block, int indent) {
 }
 
 int main(int argc, char** argv) {
+    mlir::registerAsmPrinterCLOptions();
+    mlir::registerMLIRContextCLOptions();
+    mlir::registerPassManagerCLOptions();
     cl::ParseCommandLineOptions(argc, argv, "mlir demo");
 
     //llvm::raw_ostream &out = llvm::outs();
@@ -188,8 +192,11 @@ module @module_symbol attributes {module.attr="this is attr"} {
     // ==========test PassManager begin====================
     std::cout << "==========test PassManager begin==============" << std::endl;
     mlir::PassManager passManager(context);
+    // Apply any generic pass manager command line options
+    applyPassManagerCLOptions(passManager);
     // addPass 会调用 getCanonicalizationPatterns
     passManager.addNestedPass<mlir::FuncOp>(mlir::createCanonicalizerPass());
+    // run pass pipeline
     if (mlir::failed(passManager.run(*module_ref))) {
         std::cerr << "PassManager run failed" << std::endl;
     } else {
