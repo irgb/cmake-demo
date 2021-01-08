@@ -45,7 +45,7 @@ def ConstantOp : Test_Op<"constant", [ConstantLike, NoSideEffect]> {
   //let assemblyFormat = "attr-dict `:` type($result)";
   //let assemblyFormat = "attr-dict `:` functional-type(operands, $result)";
   //let assemblyFormat = "operands attr-dict `:` type($result)";
-  //let verifier = [{ return ::verify(*this); }];
+  let verifier = [{ return ::verify(*this); }];
 }
 
 def ConstantTensorOp : Test_Op<"constant_tensor", [NoSideEffect]> {

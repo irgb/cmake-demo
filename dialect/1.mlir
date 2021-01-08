@@ -2,6 +2,7 @@
 !i32_alias = type i32
 
 // ModuleOp contains a single region containing a single block.
+// If module is not found, mlir will create a default one.
 module @module_symbol attributes {module.attr="this is attr"} {
   // A function is a FuncOp containing a single region, i.e. function body.
   func @add(%arg0 : i32, %arg1 : i32) -> i32 {
@@ -54,4 +55,4 @@ module @module_symbol attributes {module.attr="this is attr"} {
 
   // module_terminator will be add implicitly to the end of a module.
   "module_terminator"() : () -> ()
-}
+} // end of module

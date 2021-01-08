@@ -1,4 +1,7 @@
 // main function
 func @main() -> () {
-    return
+    //return
+}
+func @main1() -> () {
+    //return
 }
