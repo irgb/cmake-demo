@@ -43,7 +43,8 @@ void printOperation(mlir::Operation *op, int indent) {
         << "' with " << op->getNumOperands() << " operands"
         << ", " << op->getNumResults() << " results"
         << ", " << op->getAttrs().size() << " attributes"
-        << ", " << op->getNumRegions() << " regions\n";
+        << ", " << op->getNumRegions() << " regions"
+        << ", " << op->getNumSuccessors() << " successors\n";
     if (!op->getAttrs().empty()) {
         printIndent(indent) << op->getAttrs().size() << " attributes:\n";
         for (mlir::NamedAttribute attr : op->getAttrs()) {

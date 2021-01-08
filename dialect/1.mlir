@@ -32,18 +32,21 @@ module @module_symbol attributes {module.attr="this is attr"} {
   %res = "do_async"(%1, %2, %op) ({
   //^bb0
     %is_add = "is_add"(%op) : (!test.compute_type<1>) -> i1
+    // cond_br is a terminator operation, and it has 2 successors, i.e., ^bb1, ^bb2
     //"cond_br"(%is_add)[^bb1, ^bb2] : (i1) -> ()
     cond_br %is_add, ^bb1(%1, %2: i32, i32), ^bb2(%1, %2: i32, i32)
 
-  ^bb1(%arg00 : i32, %arg01 : i32):
+  ^bb1(%arg00 : i32, %arg01 : i32): // %arg00, %arg01 are BlockArgument, not BlockOperand
     %br1_res = call @add(%arg00, %arg01) : (i32, i32) -> i32
     "dialect.innerop7"(%1, %2) : (i32, i32) -> ()
-    br ^bb3(%1, %2: i32, i32)
+    // br is a terminator operation, and it has 1 successor, i.e., ^bb3
+    br ^bb3(%1, %2: i32, i32) // %1, %2 are BlockArgument, not BlockOperand
 
   ^bb2(%arg10 : i32, %arg11 : i32):
     %br2_res = call @sub(%arg10, %arg11) : (i32, i32) -> i32
     "dialect.innerop7"(%br2_res) : (i32) -> ()
 
+  // ^bb2, ^bb3 contains no terminator, they have 0 successor.
   ^bb3(%arg20 : i32, %arg21 : i32):
     "dialect.innerop7"() : () -> ()
 
